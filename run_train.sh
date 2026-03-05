@@ -3,9 +3,9 @@
 # Vietnamese GPT-2 Training Script (Multi-GPU)
 # ==============================================
 
-# Select 2 GPUs (e.g. GPU 0 and GPU 1)
-export CUDA_VISIBLE_DEVICES=0,1
-NUM_GPUS=2
+# Select GPU 1
+export CUDA_VISIBLE_DEVICES=1
+NUM_GPUS=1
 
 # Set environment variables to prevent multiprocessing issues
 export OMP_NUM_THREADS=1

@@ -15,7 +15,11 @@ from transformers import GPT2TokenizerFast
 
 
 # =============================== Configuration ================================
-DATASET_NAME = "bkai-foundation-models/BKAINewsCorpus"
+# Mix: BKAINewsCorpus (news) + Wikipedia VI
+DATASET_CONFIGS = [
+    {"name": "bkai-foundation-models/BKAINewsCorpus", "split": "train", "text_col": "text"},
+    {"name": "vietgpt/wikipedia_vi",                  "split": "train", "text_col": "text"},
+]
 VOCAB_SIZE = 50257  # Keep the same vocab size as original GPT-2
 MIN_FREQUENCY = 2
 SPECIAL_TOKEN = "<|endoftext|>"
@@ -37,21 +41,21 @@ def normalize_text(text: str) -> str:
     return unicodedata.normalize("NFC", text)
 
 
-def get_training_corpus(dataset, batch_size: int = 1000) -> Iterator[list]:
+def get_training_corpus(datasets_list, batch_size: int = 1000) -> Iterator[list]:
     """
-    Generator to yield batches of text from the dataset.
-    
+    Generator to yield batches of text from multiple datasets.
+
     Args:
-        dataset: Hugging Face dataset
+        datasets_list: List of Hugging Face datasets
         batch_size: Number of samples per batch
-        
+
     Yields:
         List of NFC-normalized texts
     """
-    for i in range(0, len(dataset), batch_size):
-        batch = dataset[i : i + batch_size]
-        # Normalize Unicode NFC for each text
-        yield [normalize_text(text) for text in batch["text"]]
+    for dataset in datasets_list:
+        for i in range(0, len(dataset), batch_size):
+            batch = dataset[i : i + batch_size]
+            yield [normalize_text(text) for text in batch["text"]]
 
 
 def train_tokenizer():
@@ -62,23 +66,32 @@ def train_tokenizer():
     print("VIETNAMESE GPT-2 TOKENIZER TRAINING")
     print("=" * 60)
     
-    # 1. Load dataset
-    print(f"\n[1/5] Loading dataset: {DATASET_NAME}")
-    dataset = load_dataset(DATASET_NAME, split="train")
-    print(f"      Total samples: {len(dataset):,}")
+    # 1. Load datasets
+    all_datasets = []
+    total_samples = 0
+    for cfg in DATASET_CONFIGS:
+        print(f"\n[1/{len(DATASET_CONFIGS)}+] Loading dataset: {cfg['name']}")
+        ds = load_dataset(cfg["name"], split=cfg["split"])
+        if cfg["text_col"] != "text":
+            ds = ds.rename_column(cfg["text_col"], "text")
+        ds = ds.select_columns(["text"])
+        print(f"      Samples: {len(ds):,}")
+        total_samples += len(ds)
+        all_datasets.append(ds)
+    print(f"\n      Total samples (combined): {total_samples:,}")
     
     # 2. Initialize ByteLevelBPETokenizer
     print("\n[2/5] Initializing ByteLevelBPETokenizer...")
     tokenizer = ByteLevelBPETokenizer()
-    
+
     # 3. Train tokenizer
     print(f"\n[3/5] Training tokenizer with vocab_size={VOCAB_SIZE:,}")
     print(f"      Special token: {SPECIAL_TOKEN}")
     print(f"      Min frequency: {MIN_FREQUENCY}")
-    
-    # Train from iterator
+
+    # Train from iterator (streams all datasets)
     tokenizer.train_from_iterator(
-        get_training_corpus(dataset),
+        get_training_corpus(all_datasets),
         vocab_size=VOCAB_SIZE,
         min_frequency=MIN_FREQUENCY,
         special_tokens=[SPECIAL_TOKEN],

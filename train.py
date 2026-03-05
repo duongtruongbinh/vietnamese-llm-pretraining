@@ -17,7 +17,7 @@ if 'WANDB_PROJECT' not in os.environ:
     os.environ['WANDB_PROJECT'] = 'vietnamese-gpt2'
 
 import torch
-from datasets import load_dataset
+from datasets import load_dataset, concatenate_datasets
 from transformers import (
     GPT2LMHeadModel,
     GPT2TokenizerFast,
@@ -32,11 +32,15 @@ from transformers import (
 # Model settings
 BASE_MODEL = "gpt2"  # GPT-2 Small (124M parameters)
 TOKENIZER_DIR = "./vietnamese_tokenizer"
-OUTPUT_DIR = "./vietnamese_gpt2"
+OUTPUT_DIR = "./vietnamese_gpt2_pre_end_mixed_data"
 LOGGING_DIR = "./logs"
 
 # Dataset settings
-DATASET_NAME = "bkai-foundation-models/BKAINewsCorpus"
+# Mix: BKAINewsCorpus (news) + Wikipedia VI
+DATASET_CONFIGS = [
+    {"name": "bkai-foundation-models/BKAINewsCorpus", "split": "train", "text_col": "text"},
+    {"name": "vietgpt/wikipedia_vi",                  "split": "train", "text_col": "text"},
+]
 MAX_LENGTH = 1024  # Block size for grouped texts
 
 # Training hyperparameters
@@ -45,7 +49,7 @@ WEIGHT_DECAY = 0.01
 NUM_TRAIN_EPOCHS = 1
 PER_DEVICE_TRAIN_BATCH_SIZE = 2  # Reduced from 4 to avoid OOM
 PER_DEVICE_EVAL_BATCH_SIZE = 2  # Reduced from 4 to avoid OOM
-GRADIENT_ACCUMULATION_STEPS = 32  # 2 (batch) x 32 (accum) x 2 (GPUs) = 128 effective
+GRADIENT_ACCUMULATION_STEPS = 64  # 2 (batch) x 64 (accum) x 1 (GPU) = 128 effective
 WARMUP_RATIO = 0.1
 FP16 = True
 GRADIENT_CHECKPOINTING = True
@@ -115,23 +119,18 @@ def load_and_prepare_model(tokenizer: GPT2TokenizerFast) -> GPT2LMHeadModel:
         print(f"  - n_embd: {config.n_embd}")
         print(f"  - Original vocab_size: {config.vocab_size}")
 
-    # Use PyTorch's built-in SDPA (Scaled Dot Product Attention).
-    # Avoids flash_attn third-party package which causes CUDA illegal memory
-    # access errors when compiled against a different PyTorch ABI.
-    # SDPA automatically selects the fastest backend (FlashAttention, Memory-
-    # Efficient, or Math) at runtime.
-    attn_implementation = "sdpa"
+    # Use Flash Attention 2 for faster training.
+    # Requires model to be loaded in fp16/bf16.
+    attn_implementation = "flash_attention_2"
     if _main:
-        print(f"Attention implementation: {attn_implementation} (PyTorch native)")
+        print(f"Attention implementation: {attn_implementation}")
 
-    # Load model with pre-trained weights in FP32.
-    # Trainer with fp16=True will handle mixed precision automatically.
-    # Loading in FP16 here would cause GradScaler to fail with
-    # "Attempting to unscale FP16 gradients".
+    # Load model in FP16 for Flash Attention 2 compatibility.
     model = GPT2LMHeadModel.from_pretrained(
         BASE_MODEL,
         config=config,
         attn_implementation=attn_implementation,
+        torch_dtype=torch.float16,
     )
 
     # Resize token embeddings to match new tokenizer
@@ -183,12 +182,25 @@ def load_and_prepare_dataset(tokenizer: GPT2TokenizerFast):
         print("DATASET PREPARATION")
         print(f"{'='*60}")
 
-    # 1. Load dataset
+    # 1. Load and mix datasets
+    all_datasets = []
+    for cfg in DATASET_CONFIGS:
+        if _main:
+            print(f"\nLoading dataset: {cfg['name']}")
+        ds = load_dataset(cfg["name"], split=cfg["split"])
+        # Keep only the text column
+        if cfg["text_col"] != "text":
+            ds = ds.rename_column(cfg["text_col"], "text")
+        ds = ds.select_columns(["text"])
+        if _main:
+            print(f"  → {len(ds):,} samples")
+        all_datasets.append(ds)
+
+    # Concatenate and shuffle
+    dataset = concatenate_datasets(all_datasets)
+    dataset = dataset.shuffle(seed=42)
     if _main:
-        print(f"\nLoading dataset: {DATASET_NAME}")
-    dataset = load_dataset(DATASET_NAME, split="train")
-    if _main:
-        print(f"Total samples: {len(dataset):,}")
+        print(f"\nCombined dataset: {len(dataset):,} total samples")
     
     # 2. Tokenize function
     eos_token_id = tokenizer.eos_token_id
