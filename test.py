@@ -11,11 +11,13 @@ from transformers import GPT2LMHeadModel, GPT2TokenizerFast
 
 
 # ========================== Configuration ==========================
-MODEL_DIR = "./vietnamese_gpt2/checkpoint-41500"  # Path to trained model
+MODEL_DIR = "./vietnamese_gpt2_rand_init_mixed/final"  # Path to trained model
+# MODEL_DIR = "./vietnamese_gpt2_pre_en_mixed_data/checkpoint-3000"  # Path to trained model
+
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 # Generation parameters
-MAX_NEW_TOKENS = 150
+MAX_NEW_TOKENS = 200
 TEMPERATURE = 0.7      # Lower = more focused, Higher = more creative
 TOP_K = 50              # Top-K sampling: consider top 50 tokens
 TOP_P = 0.95            # Nucleus sampling: cumulative probability

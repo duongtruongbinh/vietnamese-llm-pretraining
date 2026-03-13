@@ -6,7 +6,7 @@ Perplexity calculator from trainer_state.json checkpoint logs.
 import json
 import math
 
-CHECKPOINT_PATH = 'vietnamese_gpt2/checkpoint-41500/trainer_state.json'
+CHECKPOINT_PATH = './vietnamese_gpt2_pre_en_mixed_data/checkpoint-3000/trainer_state.json'
 
 with open(CHECKPOINT_PATH) as f:
     data = json.load(f)

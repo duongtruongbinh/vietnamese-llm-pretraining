@@ -1,10 +1,10 @@
 #!/bin/bash
 # ==============================================
-# Vietnamese GPT-2 Training Script (Multi-GPU)
+# Vietnamese GPT-2 Training Script (Random Init, Single GPU 1)
 # ==============================================
 
-# Select GPU
-export CUDA_VISIBLE_DEVICES=0
+# Select GPU 1 only
+export CUDA_VISIBLE_DEVICES=1
 NUM_GPUS=1
 
 # Set environment variables to prevent multiprocessing issues
@@ -20,13 +20,13 @@ export WANDB_MODE="online"  # change to "offline" if no internet
 python3 -c "import torch; torch.cuda.empty_cache()" 2>/dev/null || true
 
 echo "=========================================="
-echo "Vietnamese GPT-2 Continual Pre-training"
+echo "Vietnamese GPT-2 Pre-training (Random Init)"
 echo "=========================================="
-echo "GPUs: $CUDA_VISIBLE_DEVICES (${NUM_GPUS} devices)"
+echo "GPU: $CUDA_VISIBLE_DEVICES (${NUM_GPUS} device)"
 echo ""
 
-# Run training with DDP via torchrun
-torchrun --nproc_per_node=$NUM_GPUS train.py 2>&1 | tee training_log.txt
+# Run training on single GPU (no torchrun needed for 1 GPU)
+python3 train_rand_init.py 2>&1 | tee training_log_rand_init.txt
 
 echo ""
 echo "Training completed!"

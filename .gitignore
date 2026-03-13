@@ -6,6 +6,8 @@ __pycache__/
 .Python
 
 vietnamese_gpt2/checkpoint-*/
+vietnamese_gpt2_pre_end_mixed_data/checkpoint-*/
+vietnamese_gpt2_rand_init_mixed/checkpoint-*/
 *.safetensors
 *.pt
 *.pth
