@@ -5,21 +5,20 @@ __pycache__/
 *.so
 .Python
 
-vietnamese_gpt2/checkpoint-*/
-vietnamese_gpt2_pre_end_mixed_data/checkpoint-*/
-vietnamese_gpt2_rand_init_mixed/checkpoint-*/
+# Artifacts — checkpoints and logs (large files, generated outputs)
+artifacts/checkpoints/
+artifacts/logs/
+
+# Model weights
 *.safetensors
 *.pt
 *.pth
 *.bin
 
-# Logs
-logs/
-*.log
-training_log.txt
+# Data — raw crawled/downloaded files (large)
+data/raws/*
+data/train/*
 
-# Wandb
-wandb/
 
 # Virtual environment
 venv/
@@ -31,4 +30,3 @@ ENV/
 .idea/
 *.swp
 *.swo
-
