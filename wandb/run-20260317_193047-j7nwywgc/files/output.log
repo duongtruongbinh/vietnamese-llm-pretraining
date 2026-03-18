@@ -1,0 +1,158 @@
+  0%|          | 0/9460 [00:00<?, ?it/s]`use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`...
+`loss_type=None` was set in the config but it is unrecognized. Using the default loss: `ForCausalLMLoss`.
+  5%|▌         | 500/9460 [53:06<14:35:51,  5.87s/i/home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 9.5364, 'grad_norm': 2.890625, 'learning_rate': 5.232558139534884e-05, 'epoch': 0.01}
+{'loss': 6.7063, 'grad_norm': 1.765625, 'learning_rate': 0.00010517970401691332, 'epoch': 0.02}
+{'loss': 5.6567, 'grad_norm': 1.5625, 'learning_rate': 0.00015803382663847783, 'epoch': 0.03}
+{'loss': 5.2109, 'grad_norm': 0.80859375, 'learning_rate': 0.00021088794926004228, 'epoch': 0.03}
+{'loss': 4.8077, 'grad_norm': 1.2890625, 'learning_rate': 0.00026374207188160676, 'epoch': 0.04}
+  return func(*args, **kwargs)                     
+{'eval_loss': 4.564270496368408, 'eval_runtime': 235.8673, 'eval_samples_per_second': 129.085, 'eval_steps_per_second': 32.272, 'epoch': 0.04}
+ 11%|█         | 1000/9460 [1:46:00<13:46:08,  5.86/home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 4.4653, 'grad_norm': 1.15625, 'learning_rate': 0.0003165961945031712, 'epoch': 0.05}
+{'loss': 4.1839, 'grad_norm': 1.046875, 'learning_rate': 0.00036945031712473577, 'epoch': 0.06}
+{'loss': 3.9082, 'grad_norm': 0.734375, 'learning_rate': 0.0004223044397463002, 'epoch': 0.07}
+{'loss': 3.6759, 'grad_norm': 0.7734375, 'learning_rate': 0.0004751585623678647, 'epoch': 0.08}
+{'loss': 3.4708, 'grad_norm': 0.490234375, 'learning_rate': 0.0004999521942248769, 'epoch': 0.08}
+  return func(*args, **kwargs)                     
+{'eval_loss': 3.2829480171203613, 'eval_runtime': 226.0952, 'eval_samples_per_second': 134.664, 'eval_steps_per_second': 33.667, 'epoch': 0.08}
+ 16%|█▌        | 1500/9460 [2:38:38<12:55:03,  5.84/home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 3.3287, 'grad_norm': 0.5, 'learning_rate': 0.0004996017003038706, 'epoch': 0.09}
+{'loss': 3.2347, 'grad_norm': 0.44140625, 'learning_rate': 0.0004989114006382451, 'epoch': 0.1}
+{'loss': 3.1714, 'grad_norm': 0.435546875, 'learning_rate': 0.000497882234996406, 'epoch': 0.11}
+{'loss': 3.1051, 'grad_norm': 0.490234375, 'learning_rate': 0.0004965156044761693, 'epoch': 0.12}
+{'loss': 3.0612, 'grad_norm': 0.37890625, 'learning_rate': 0.0004948133695973193, 'epoch': 0.13}
+  return func(*args, **kwargs)                     
+{'eval_loss': 2.9558186531066895, 'eval_runtime': 223.1716, 'eval_samples_per_second': 136.429, 'eval_steps_per_second': 34.108, 'epoch': 0.13}
+ 21%|██        | 2000/9460 [3:31:15<12:04:18,  5.83/home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 3.0215, 'grad_norm': 0.384765625, 'learning_rate': 0.0004927778477687109, 'epoch': 0.14}
+{'loss': 2.9931, 'grad_norm': 0.36328125, 'learning_rate': 0.0004904118101333687, 'epoch': 0.14}
+{'loss': 2.9586, 'grad_norm': 0.373046875, 'learning_rate': 0.0004877184777958742, 'epoch': 0.15}
+{'loss': 2.9395, 'grad_norm': 0.359375, 'learning_rate': 0.000484701517437181, 'epoch': 0.16}
+{'loss': 2.913, 'grad_norm': 0.373046875, 'learning_rate': 0.00048136503632282423, 'epoch': 0.17}
+  return func(*args, **kwargs)                     
+{'eval_loss': 2.8188393115997314, 'eval_runtime': 233.345, 'eval_samples_per_second': 130.481, 'eval_steps_per_second': 32.621, 'epoch': 0.17}
+ 26%|██▋       | 2500/9460 [4:23:49<11:18:29,  5.85/home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 2.8925, 'grad_norm': 0.373046875, 'learning_rate': 0.0004777135767113226, 'epoch': 0.18}
+{'loss': 2.8699, 'grad_norm': 0.3515625, 'learning_rate': 0.0004737521096703839, 'epoch': 0.19}
+{'loss': 2.8499, 'grad_norm': 0.31640625, 'learning_rate': 0.000469486028309334, 'epoch': 0.2}
+{'loss': 2.834, 'grad_norm': 0.337890625, 'learning_rate': 0.0004649211404369808, 'epoch': 0.2}
+{'loss': 2.8191, 'grad_norm': 0.365234375, 'learning_rate': 0.00046006366065491026, 'epoch': 0.21}
+  return func(*args, **kwargs)                     
+{'eval_loss': 2.735837697982788, 'eval_runtime': 224.7026, 'eval_samples_per_second': 135.499, 'eval_steps_per_second': 33.876, 'epoch': 0.21}
+ 32%|███▏      | 3000/9460 [5:16:15<10:29:01,  5.84/home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 2.8108, 'grad_norm': 0.310546875, 'learning_rate': 0.0004549202018969778, 'epoch': 0.22}
+{'loss': 2.7895, 'grad_norm': 0.322265625, 'learning_rate': 0.0004494977664265136, 'epoch': 0.23}
+{'loss': 2.7766, 'grad_norm': 0.326171875, 'learning_rate': 0.0004438037363034972, 'epoch': 0.24}
+{'loss': 2.7706, 'grad_norm': 0.33203125, 'learning_rate': 0.0004378458633346813, 'epoch': 0.25}
+{'loss': 2.7628, 'grad_norm': 0.37890625, 'learning_rate': 0.0004316322585203436, 'epoch': 0.25}
+  return func(*args, **kwargs)                     
+{'eval_loss': 2.6769051551818848, 'eval_runtime': 224.7961, 'eval_samples_per_second': 135.443, 'eval_steps_per_second': 33.862, 'epoch': 0.25}
+ 37%|███▋      | 3500/9460 [6:08:35<9:38:38,  5.83s/home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 2.7455, 'grad_norm': 0.28515625, 'learning_rate': 0.00042517138101203677, 'epoch': 0.26}
+{'loss': 2.737, 'grad_norm': 0.328125, 'learning_rate': 0.0004184720265963681, 'epoch': 0.27}
+{'loss': 2.7258, 'grad_norm': 0.2890625, 'learning_rate': 0.00041154331572048524, 'epoch': 0.28}
+{'loss': 2.7201, 'grad_norm': 0.318359375, 'learning_rate': 0.00040439468107557433, 'epoch': 0.29}
+{'loss': 2.7164, 'grad_norm': 0.2890625, 'learning_rate': 0.0003970358547552691, 'epoch': 0.3}
+  return func(*args, **kwargs)                     
+{'eval_loss': 2.631293773651123, 'eval_runtime': 224.3444, 'eval_samples_per_second': 135.715, 'eval_steps_per_second': 33.93, 'epoch': 0.3}
+ 42%|████▏     | 4000/9460 [7:00:43<8:46:59,  5.79s/home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 2.7038, 'grad_norm': 0.32421875, 'learning_rate': 0.00038947685500645754, 'epoch': 0.31}
+{'loss': 2.6986, 'grad_norm': 0.28515625, 'learning_rate': 0.000381727972590521, 'epoch': 0.31}
+{'loss': 2.6906, 'grad_norm': 0.296875, 'learning_rate': 0.00037379975677357476, 'epoch': 0.32}
+{'loss': 2.6852, 'grad_norm': 0.28515625, 'learning_rate': 0.00036570300096478185, 'epoch': 0.33}
+{'loss': 2.6754, 'grad_norm': 0.29296875, 'learning_rate': 0.00035744872802229296, 'epoch': 0.34}
+  return func(*args, **kwargs)                     
+{'eval_loss': 2.6006762981414795, 'eval_runtime': 222.5875, 'eval_samples_per_second': 136.787, 'eval_steps_per_second': 34.198, 'epoch': 0.34}
+ 48%|████▊     | 4500/9460 [7:52:43<7:57:57,  5.78s/home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 2.6689, 'grad_norm': 0.28515625, 'learning_rate': 0.0003490481752468159, 'epoch': 0.35}
+{'loss': 2.6606, 'grad_norm': 0.302734375, 'learning_rate': 0.00034051277908324514, 'epoch': 0.36}
+{'loss': 2.6577, 'grad_norm': 0.2890625, 'learning_rate': 0.00033185415955117763, 'epoch': 0.37}
+{'loss': 2.6579, 'grad_norm': 0.28125, 'learning_rate': 0.0003230841044255121, 'epoch': 0.37}
+{'loss': 2.6546, 'grad_norm': 0.2890625, 'learning_rate': 0.00031421455318866653, 'epoch': 0.38}
+  return func(*args, **kwargs)                     
+{'eval_loss': 2.5702223777770996, 'eval_runtime': 222.7915, 'eval_samples_per_second': 136.661, 'eval_steps_per_second': 34.166, 'epoch': 0.38}
+ 53%|█████▎    | 5000/9460 [8:44:43<7:09:57,  5.78s/home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 2.6454, 'grad_norm': 0.287109375, 'learning_rate': 0.00030525758077626375, 'epoch': 0.39}
+{'loss': 2.6362, 'grad_norm': 0.29296875, 'learning_rate': 0.00029622538113841055, 'epoch': 0.4}
+{'loss': 2.6379, 'grad_norm': 0.283203125, 'learning_rate': 0.0002871302506389531, 'epoch': 0.41}
+{'loss': 2.6318, 'grad_norm': 0.283203125, 'learning_rate': 0.0002779845713153052, 'epoch': 0.42}
+{'loss': 2.6309, 'grad_norm': 0.279296875, 'learning_rate': 0.0002688007940216432, 'epoch': 0.42}
+  return func(*args, **kwargs)                     
+{'eval_loss': 2.550205945968628, 'eval_runtime': 223.9036, 'eval_samples_per_second': 135.983, 'eval_steps_per_second': 33.997, 'epoch': 0.42}
+ 58%|█████▊    | 5500/9460 [9:36:42<6:21:16,  5.78s/home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 2.6243, 'grad_norm': 0.279296875, 'learning_rate': 0.00025959142147841287, 'epoch': 0.43}
+{'loss': 2.6204, 'grad_norm': 0.29296875, 'learning_rate': 0.00025036899125122666, 'epoch': 0.44}
+{'loss': 2.6186, 'grad_norm': 0.28515625, 'learning_rate': 0.00024114605868232267, 'epoch': 0.45}
+{'loss': 2.6153, 'grad_norm': 0.28125, 'learning_rate': 0.00023193517979782307, 'epoch': 0.46}
+{'loss': 2.6108, 'grad_norm': 0.2734375, 'learning_rate': 0.0002227488942140612, 'epoch': 0.47}
+  return func(*args, **kwargs)                     
+{'eval_loss': 2.531593084335327, 'eval_runtime': 222.9567, 'eval_samples_per_second': 136.56, 'eval_steps_per_second': 34.141, 'epoch': 0.47}
+ 63%|██████▎   | 6000/9460 [10:28:37<5:33:00,  5.77/home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 2.6041, 'grad_norm': 0.275390625, 'learning_rate': 0.00021359970806624883, 'epoch': 0.48}
+{'loss': 2.6051, 'grad_norm': 0.271484375, 'learning_rate': 0.00020450007698272416, 'epoch': 0.48}
+{'loss': 2.6044, 'grad_norm': 0.28515625, 'learning_rate': 0.00019546238912796028, 'epoch': 0.49}
+{'loss': 2.5937, 'grad_norm': 0.27734375, 'learning_rate': 0.0001864989483374175, 'epoch': 0.5}
+{'loss': 2.5962, 'grad_norm': 0.27734375, 'learning_rate': 0.0001776219573672005, 'epoch': 0.51}
+  return func(*args, **kwargs)                     
+{'eval_loss': 2.519249677658081, 'eval_runtime': 222.7476, 'eval_samples_per_second': 136.688, 'eval_steps_per_second': 34.173, 'epoch': 0.51}
+ 69%|██████▊   | 6500/9460 [11:20:35<4:44:33,  5.77/home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 2.5902, 'grad_norm': 0.28515625, 'learning_rate': 0.00016884350128132513, 'epoch': 0.52}
+{'loss': 2.5968, 'grad_norm': 0.2734375, 'learning_rate': 0.0001601755309992093, 'epoch': 0.53}
+{'loss': 2.5849, 'grad_norm': 0.279296875, 'learning_rate': 0.00015162984702578712, 'epoch': 0.54}
+{'loss': 2.5895, 'grad_norm': 0.26953125, 'learning_rate': 0.00014321808338639715, 'epoch': 0.54}
+{'loss': 2.5862, 'grad_norm': 0.26953125, 'learning_rate': 0.00013495169178831385, 'epoch': 0.55}
+  return func(*args, **kwargs)                     
+{'eval_loss': 2.507810592651367, 'eval_runtime': 222.6677, 'eval_samples_per_second': 136.737, 'eval_steps_per_second': 34.185, 'epoch': 0.55}
+ 74%|███████▍  | 7000/9460 [12:12:28<3:56:44,  5.77/home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 2.5846, 'grad_norm': 0.26953125, 'learning_rate': 0.00012684192603048495, 'epoch': 0.56}
+{'loss': 2.5876, 'grad_norm': 0.26953125, 'learning_rate': 0.00011889982668270119, 'epoch': 0.57}
+{'loss': 2.5871, 'grad_norm': 0.265625, 'learning_rate': 0.00011113620605505251, 'epoch': 0.58}
+{'loss': 2.5835, 'grad_norm': 0.26171875, 'learning_rate': 0.00010356163347813702, 'epoch': 0.59}
+{'loss': 2.5766, 'grad_norm': 0.259765625, 'learning_rate': 9.618642091405871e-05, 'epoch': 0.59}
+  return func(*args, **kwargs)                     
+{'eval_loss': 2.5013701915740967, 'eval_runtime': 222.2286, 'eval_samples_per_second': 137.008, 'eval_steps_per_second': 34.253, 'epoch': 0.59}
+ 79%|███████▉  | 7500/9460 [13:04:17<3:08:27,  5.77/home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 2.5763, 'grad_norm': 0.271484375, 'learning_rate': 8.902060891780595e-05, 'epoch': 0.6}
+{'loss': 2.5795, 'grad_norm': 0.267578125, 'learning_rate': 8.20739529681204e-05, 'epoch': 0.61}
+{'loss': 2.5709, 'grad_norm': 0.259765625, 'learning_rate': 7.535591018646676e-05, 'epoch': 0.62}
+{'loss': 2.5744, 'grad_norm': 0.26171875, 'learning_rate': 6.88756264621841e-05, 'epoch': 0.63}
+{'loss': 2.573, 'grad_norm': 0.255859375, 'learning_rate': 6.264192400134553e-05, 'epoch': 0.64}
+  return func(*args, **kwargs)                     
+{'eval_loss': 2.4964399337768555, 'eval_runtime': 222.5525, 'eval_samples_per_second': 136.808, 'eval_steps_per_second': 34.203, 'epoch': 0.64}
+ 85%|████████▍ | 8000/9460 [13:56:11<2:20:36,  5.78/home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 2.5694, 'grad_norm': 0.26171875, 'learning_rate': 5.666328931627781e-05, 'epoch': 0.65}
+{'loss': 2.5705, 'grad_norm': 0.265625, 'learning_rate': 5.09478616720922e-05, 'epoch': 0.65}
+{'loss': 2.575, 'grad_norm': 0.26171875, 'learning_rate': 4.550342200595414e-05, 'epoch': 0.66}
+{'loss': 2.5704, 'grad_norm': 0.2578125, 'learning_rate': 4.033738233417808e-05, 'epoch': 0.67}
+{'loss': 2.573, 'grad_norm': 0.26171875, 'learning_rate': 3.5456775661568355e-05, 'epoch': 0.68}
+  return func(*args, **kwargs)                     
+{'eval_loss': 2.4945313930511475, 'eval_runtime': 222.543, 'eval_samples_per_second': 136.814, 'eval_steps_per_second': 34.205, 'epoch': 0.68}
+ 90%|████████▉ | 8500/9460 [14:48:08<1:33:01,  5.81/home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 2.5699, 'grad_norm': 0.2578125, 'learning_rate': 3.086824640674296e-05, 'epoch': 0.69}
+{'loss': 2.5712, 'grad_norm': 0.2578125, 'learning_rate': 2.6578041356475623e-05, 'epoch': 0.7}
+{'loss': 2.5696, 'grad_norm': 0.259765625, 'learning_rate': 2.259200116137039e-05, 'epoch': 0.7}
+{'loss': 2.5675, 'grad_norm': 0.255859375, 'learning_rate': 1.8915552384447283e-05, 'epoch': 0.71}
+{'loss': 2.572, 'grad_norm': 0.255859375, 'learning_rate': 1.5553700113462743e-05, 'epoch': 0.72}
+  return func(*args, **kwargs)                     
+{'eval_loss': 2.493825912475586, 'eval_runtime': 223.0159, 'eval_samples_per_second': 136.524, 'eval_steps_per_second': 34.132, 'epoch': 0.72}
+ 95%|█████████▌| 9000/9460 [15:40:03<44:18,  5.78s//home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 2.5614, 'grad_norm': 0.259765625, 'learning_rate': 1.2511021147023683e-05, 'epoch': 0.73}
+{'loss': 2.5781, 'grad_norm': 0.255859375, 'learning_rate': 9.791657763770778e-06, 'epoch': 0.74}
+{'loss': 2.565, 'grad_norm': 0.2578125, 'learning_rate': 7.399312083113535e-06, 'epoch': 0.75}
+{'loss': 2.5693, 'grad_norm': 0.255859375, 'learning_rate': 5.337241025194728e-06, 'epoch': 0.76}
+{'loss': 2.5649, 'grad_norm': 0.25390625, 'learning_rate': 3.6082518769456896e-06, 'epoch': 0.76}
+  return func(*args, **kwargs)                     
+{'eval_loss': 2.4937472343444824, 'eval_runtime': 223.6173, 'eval_samples_per_second': 136.157, 'eval_steps_per_second': 34.04, 'epoch': 0.76}
+100%|██████████| 9460/9460 [16:24:29<00:00,  5.80s/it]/home/shared/miniconda3/envs/nhantd_env/lib/python3.11/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+{'loss': 2.5727, 'grad_norm': 0.26171875, 'learning_rate': 2.214698470268367e-06, 'epoch': 0.77}
+{'loss': 2.5644, 'grad_norm': 0.2578125, 'learning_rate': 1.1584779775475618e-06, 'epoch': 0.78}
+{'loss': 2.5718, 'grad_norm': 0.2578125, 'learning_rate': 4.4102832885581366e-07, 'epoch': 0.79}
+{'loss': 2.568, 'grad_norm': 0.2578125, 'learning_rate': 6.332625436683559e-08, 'epoch': 0.8}
+  return func(*args, **kwargs)
+There were missing keys in the checkpoint model loaded: ['lm_head.weight'].
+100%|██████████| 9460/9460 [16:24:30<00:00,  6.24s/it]
+{'train_runtime': 59073.2156, 'train_samples_per_second': 40.996, 'train_steps_per_second': 0.16, 'train_loss': 2.9524272717078697, 'epoch': 0.8}
+100%|██████████| 7612/7612 [03:42<00:00, 34.17it/s]
+Done. Eval loss=2.4937, perplexity=12.11
+Model saved to: ./artifacts/checkpoints/scratch_init/final
