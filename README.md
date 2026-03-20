@@ -1,101 +1,97 @@
 # Vietnamese GPT-2 Pre-training
 
-Pre-train a GPT-2 language model from scratch on Vietnamese text data (news corpus + Wikipedia).
-
-## Project Structure
-
-```
-├── config.py                  # Centralized configuration (paths, hyperparameters)
-├── utils.py                   # Shared utilities (text normalization, formatting)
-├── train.py                   # Model training script (DDP-compatible)
-├── inference.py               # Text generation / interactive inference
-├── tokenizer.py               # BPE tokenizer training
-├── data/
-│   ├── crawl_vi_wiki.py       # Vietnamese Wikipedia crawler (MediaWiki API)
-│   ├── process_vi_wiki.py     # Wikitext → clean plaintext pipeline
-│   └── download_datasets.py   # Download HuggingFace datasets
-├── scripts/
-│   └── train.sh               # Multi-GPU training launcher
-├── artifacts/
-│   ├── tokenizer/             # Trained tokenizer files
-│   ├── checkpoints/           # Model checkpoints (gitignored)
-│   └── logs/                  # Training logs (gitignored)
-└── pyproject.toml             # Project metadata & dependencies
-```
+Pre-train GPT-2 from scratch on Vietnamese text data (BKAI News + Wikipedia).
 
 ## Requirements
 
 - Python >= 3.11
-- CUDA-capable GPU(s) recommended for training
+- CUDA GPU
 
 ## Setup
 
 ```bash
-# Using uv (recommended)
 uv sync
-
-# Or using pip
-pip install -r requirements.txt
+# or: pip install -r requirements.txt
 ```
 
-## Data Preparation
+## Project Structure
 
-### 1. Download datasets
+```
+config.py              # All hyperparameters and paths
+train.py               # Pre-training script (DDP)
+inference.py           # Text generation
+sft_poem.py            # SFT for poem generation
+generate_poem.py       # Generate poems
+tokenizer.py           # Train BPE tokenizer
+data/
+  download_datasets.py # Download BKAI corpus
+  crawl_vi_wiki.py     # Crawl Vietnamese Wikipedia
+  process_vi_wiki.py   # Clean wikitext to plaintext
+  crawl_poem.py        # Crawl poem metadata
+  scrape_poem_content.py # Scrape poem content
+  prepare_poem_data.py # Extract valid stanzas
+scripts/
+  train.sh             # Multi-GPU pre-training
+  train_sft_poem.sh    # SFT poem training
+artifacts/
+  tokenizer/           # Trained tokenizer
+  checkpoints/         # Model checkpoints
+```
 
-Downloads the BKAI News Corpus from HuggingFace:
+## Pre-training Pipeline
+
+### 1. Prepare Data
 
 ```bash
 python data/download_datasets.py
-```
-
-### 2. Crawl Vietnamese Wikipedia (optional)
-
-```bash
-python data/crawl_vi_wiki.py --limit 50000 --delay 1.0
-```
-
-### 3. Process Wikipedia data
-
-Cleans wikitext markup and converts to Parquet:
-
-```bash
+python data/crawl_vi_wiki.py 
 python data/process_vi_wiki.py
 ```
 
-## Train Tokenizer
-
-Trains a byte-level BPE tokenizer on the combined dataset:
+### 2. Train Tokenizer
 
 ```bash
 python tokenizer.py
 ```
 
-## Training
-
-### Single GPU
+### 3. Train Model
 
 ```bash
+# Single GPU
 python train.py
-```
 
-### Multi-GPU (DDP)
-
-```bash
+# Multi-GPU
 bash scripts/train.sh
 ```
 
-Training automatically resumes from the latest checkpoint if one exists.
-All hyperparameters are centralized in `config.py`.
-
-## Inference
-
-Run test examples and optionally enter interactive mode:
+### 4. Inference
 
 ```bash
 python inference.py
 ```
 
+## Poem SFT Pipeline
+
+### 1. Prepare Poem Data
+
+```bash
+python data/crawl_poem.py
+python data/scrape_poem_content.py
+python data/prepare_poem_data.py
+```
+
+### 2. Train SFT
+
+```bash
+bash scripts/train_sft_poem.sh
+```
+
+### 3. Generate Poems
+
+```bash
+python generate_poem.py
+```
+
 ## Configuration
 
-All shared paths, hyperparameters, and defaults are in `config.py`.
-Edit that file to adjust training parameters, model paths, or dataset configurations.
+All settings in `config.py`. Training auto-resumes from latest checkpoint.

@@ -44,3 +44,17 @@ TOP_P = 0.95
 REPETITION_PENALTY = 1.2
 DO_SAMPLE = True
 NUM_RETURN_SEQUENCES = 1
+
+# ── Poem SFT ─────────────────────────────────────────────────────────────────
+POEM_DATA_PATH = "data/sft/poem_stanzas.jsonl"
+POEM_RAW_CSV = "data/raws/poem_dataset.csv"
+POEM_CHECKPOINT_DIR = "./artifacts/checkpoints/sft_poem"
+POEM_MODEL_DIR = "./artifacts/checkpoints/sft_poem/final"
+POEM_PREFIX = "thơ:\n"
+POEM_LINES_PER_STANZA = 4
+POEM_WORDS_PER_LINE = 5
+POEM_EPOCHS = 30
+POEM_BATCH_SIZE = 32
+POEM_LEARNING_RATE = 5e-5
+POEM_WEIGHT_DECAY = 0.1
+POEM_MAX_LENGTH = 64
