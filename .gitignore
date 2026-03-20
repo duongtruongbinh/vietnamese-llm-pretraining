@@ -10,6 +10,9 @@ __pycache__/
 artifacts/checkpoints/
 artifacts/logs/
 
+# Environment
+.env
+
 # Data
 data/raws/
 data/train/

@@ -32,8 +32,8 @@ CHECKPOINT_EVERY = 10
 
 COOKIE_TEST_URL = "https://www.thivien.net/Xu%C3%A2n-Qu%E1%BB%B3nh/S%C3%B3ng/poem-fsd-MCqhqwgCayHKWx-MPg"
 
-THIVIEN_USERNAME = "nhantd2012"
-THIVIEN_PASSWORD = "nhantd2012"
+THIVIEN_USERNAME = os.environ.get("THIVIEN_USERNAME", "")
+THIVIEN_PASSWORD = os.environ.get("THIVIEN_PASSWORD", "")
 
 SESSION = requests.Session()
 SESSION.headers.update({
