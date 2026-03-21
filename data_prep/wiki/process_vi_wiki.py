@@ -20,13 +20,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
 from datasets import Dataset
 
-from src.utils import format_size
+from src.utils import configure_root_logging, format_size
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-)
 logger = logging.getLogger(__name__)
 
 _DATA_RAW = REPO_ROOT / "data" / "raws"
@@ -393,6 +388,7 @@ def parse_args() -> argparse.Namespace:
 
 
 if __name__ == "__main__":
+    configure_root_logging()
     args = parse_args()
     if not args.input.exists():
         logger.error("Input file not found: %s", args.input)

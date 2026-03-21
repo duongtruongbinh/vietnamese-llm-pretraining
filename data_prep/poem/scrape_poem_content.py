@@ -14,17 +14,11 @@ from bs4 import BeautifulSoup
 from curl_cffi import requests
 from tqdm import tqdm
 
+from src.utils import configure_root_logging
+
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 _DATA_RAW = REPO_ROOT / "data" / "raws"
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    handlers=[
-        logging.StreamHandler(),
-        logging.FileHandler(REPO_ROOT / "scrape_poem_content.log", encoding="utf-8"),
-    ],
-)
 log = logging.getLogger(__name__)
 
 RETRY_MAX = 3
@@ -217,6 +211,7 @@ def run(metadata_file: str, output_file: str, resume: bool = True) -> None:
 
 
 if __name__ == "__main__":
+    configure_root_logging(log_file=REPO_ROOT / "scrape_poem_content.log")
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--metadata",

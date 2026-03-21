@@ -8,13 +8,8 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
 from datasets import load_dataset
-from src.utils import format_size
+from src.utils import configure_root_logging, format_size
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-)
 logger = logging.getLogger(__name__)
 
 OUTPUT_DIR = REPO_ROOT / "data" / "train"
@@ -45,6 +40,7 @@ def download_and_save_dataset(
 
 
 def main() -> None:
+    configure_root_logging()
     download_and_save_dataset(
         name="bkai-foundation-models/BKAINewsCorpus",
         split="train",

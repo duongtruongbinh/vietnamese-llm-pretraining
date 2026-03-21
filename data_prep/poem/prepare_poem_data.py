@@ -13,13 +13,8 @@ from src.config import (
     POEM_RAW_CSV, POEM_DATA_PATH,
     POEM_LINES_PER_STANZA, POEM_WORDS_PER_LINE,
 )
-from src.utils import normalize_text
+from src.utils import configure_root_logging, normalize_text
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-)
 logger = logging.getLogger(__name__)
 
 _TRAILING_PUNCT = re.compile(r'[\"\u201c\u201d\u2018\u2019":;,\-–—]+$')
@@ -97,6 +92,7 @@ def extract_valid_stanzas(content: str) -> list[str]:
 
 
 def main() -> None:
+    configure_root_logging()
     df = pd.read_csv(POEM_RAW_CSV, encoding="utf-8-sig")
     df = clean_dataframe(df)
 

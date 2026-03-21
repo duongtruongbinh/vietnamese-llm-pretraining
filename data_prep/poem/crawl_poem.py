@@ -18,16 +18,10 @@ from selenium.webdriver.common.by import By
 from tqdm import tqdm
 from webdriver_manager.chrome import ChromeDriverManager
 
+from src.utils import configure_root_logging
+
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    handlers=[
-        logging.StreamHandler(),
-        logging.FileHandler(REPO_ROOT / "crawl_poem.log", encoding="utf-8"),
-    ],
-)
 log = logging.getLogger(__name__)
 
 SORT_CONFIGS = [
@@ -266,6 +260,7 @@ def run_phase_1(driver: webdriver.Chrome, output_file: str | None = None):
 
 
 if __name__ == "__main__":
+    configure_root_logging(log_file=REPO_ROOT / "crawl_poem.log")
     driver = init_driver()
     try:
         output_file = sys.argv[1] if len(sys.argv) > 1 else None

@@ -26,7 +26,7 @@ def format_size(num_bytes: int) -> str:
 
 
 def configure_root_logging(level: int = logging.INFO) -> None:
-    """Initialize root logging once (safe if called from multiple entry points)."""
+    """Initialize root logging once."""
     root = logging.getLogger()
     if root.handlers:
         return

@@ -7,9 +7,10 @@ CHECKPOINT_DIR = "./artifacts/checkpoints/scratch_init"
 MODEL_DIR = "./artifacts/checkpoints/scratch_init/final"
 
 # ── Dataset ──────────────────────────────────────────────────────────────────
+# weight: how many times to duplicate a dataset during pretraining (default 1).
 DATASET_CONFIGS = [
     {"path": "data/train/bkai_train.parquet", "text_col": "text"},
-    {"path": "data/train/vi_wiki_articles_clean.parquet", "text_col": "text"},
+    {"path": "data/train/vi_wiki_articles_clean.parquet", "text_col": "text", "weight": 3},
 ]
 
 # ── Tokenizer training ──────────────────────────────────────────────────────

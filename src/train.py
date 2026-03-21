@@ -82,8 +82,9 @@ def load_and_prepare_dataset(tokenizer: GPT2TokenizerFast):
             ds = ds.rename_column(cfg["text_col"], "text")
         ds = ds.select_columns(["text"])
 
-        if "vi_wiki" in src:
-            ds = concatenate_datasets([ds] * 3)
+        weight = cfg.get("weight", 1)
+        if weight > 1:
+            ds = concatenate_datasets([ds] * weight)
 
         ds = ds.shuffle(seed=42)
         if _main:

@@ -22,6 +22,8 @@ from pathlib import Path
 
 import requests
 
+from src.utils import configure_root_logging
+
 API_ENDPOINT = "https://vi.wikipedia.org/w/api.php"
 
 # Required by API etiquette: identify your bot/tool clearly
@@ -37,11 +39,6 @@ BATCH_SIZE = 50
 # Number of pages whose content we fetch per query (max 50 for anon)
 CONTENT_BATCH = 50
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-)
 logger = logging.getLogger(__name__)
 
 
@@ -352,6 +349,7 @@ def parse_args() -> argparse.Namespace:
 
 
 if __name__ == "__main__":
+    configure_root_logging()
     args = parse_args()
     crawl(
         output_dir=args.output,
