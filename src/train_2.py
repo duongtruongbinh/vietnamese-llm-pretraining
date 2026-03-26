@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""SFT GPT-2 for 5-word quatrain generation (4 lines x 5 words)."""
+"""Continued pretraining on 5-word quatrain corpus (stage 2)."""
 
 from loguru import logger
 import os
@@ -14,7 +14,7 @@ from src.config import (
     POEM_EPOCHS, POEM_BATCH_SIZE, POEM_LEARNING_RATE,
     POEM_WEIGHT_DECAY, POEM_MAX_LENGTH,
 )
-from src.utils import load_gpt2, normalize_text
+from src.utils import load_gpt2, normalize_text, PerplexityCallback
 
 def main() -> None:
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -74,7 +74,7 @@ def main() -> None:
         metric_for_best_model="eval_loss",
         logging_steps=10,
         report_to=["wandb"],
-        run_name="gpt2-sft-poem",
+        run_name="gpt2-continued-pretrain-poem",
         seed=42,
     )
 
@@ -83,6 +83,7 @@ def main() -> None:
         args=args,
         train_dataset=ds["train"],
         eval_dataset=ds["test"],
+        callbacks=[PerplexityCallback()],
     )
 
     logger.info(

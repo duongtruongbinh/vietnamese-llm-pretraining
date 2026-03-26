@@ -1,1 +1,1 @@
-"""Vietnamese GPT-2 pretraining and poem SFT package."""
+"""Vietnamese GPT-2 multi-stage pretraining package."""

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+"""Generate text from stage-1 base model."""
+
 from loguru import logger
 
 from src.config import (
@@ -16,8 +18,27 @@ DEFAULT_GEN_CONFIG = {
     "do_sample": True,
 }
 
-def interactive_mode(model, tokenizer, device):
-    logger.info("Interactive mode. Type 'quit' to exit, 'config' to change params.")
+
+def _parse_user_value(raw: str, current):
+    """Parse interactive config input into current value's type."""
+    if isinstance(current, bool):
+        lowered = raw.strip().lower()
+        if lowered in {"true", "1", "yes", "y", "on"}:
+            return True
+        if lowered in {"false", "0", "no", "n", "off"}:
+            return False
+        raise ValueError(f"Invalid bool value: {raw}")
+    if isinstance(current, int) and not isinstance(current, bool):
+        return int(raw)
+    if isinstance(current, float):
+        return float(raw)
+    return type(current)(raw)   
+
+
+def interactive_mode(model, tokenizer, device) -> None:
+    """Run interactive generation loop for stage-1 model."""
+    logger.info("Interactive mode.")
+    logger.info("Commands: 'config' to edit generation params, 'quit' to exit.")
     gen_config = dict(DEFAULT_GEN_CONFIG)
 
     while True:
@@ -30,7 +51,10 @@ def interactive_mode(model, tokenizer, device):
                 for key, value in gen_config.items():
                     new_value = input(f"  {key} [{value}]: ").strip()
                     if new_value:
-                        gen_config[key] = type(value)(new_value)
+                        try:
+                            gen_config[key] = _parse_user_value(new_value, value)
+                        except ValueError as exc:
+                            logger.warning("Skip invalid value for {}: {}", key, exc)
                 continue
             if not prompt:
                 continue
@@ -42,6 +66,7 @@ def interactive_mode(model, tokenizer, device):
             break
         except Exception as e:
             logger.exception("Generation error: {}", e)
+
 
 def main():
     model, tokenizer, device = load_gpt2(MODEL_DIR, eval_mode=True)
@@ -68,6 +93,7 @@ def main():
     user_input = input("Enter interactive mode? [Y/n]: ").strip().lower()
     if user_input != "n":
         interactive_mode(model, tokenizer, device)
+
 
 if __name__ == "__main__":
     main()

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "vietnamese-llm-pretraining"
 version = "0.1.0"
-description = "Pre-train a Vietnamese GPT-2 language model from scratch and SFT for poetry"
+description = "Multi-stage Vietnamese GPT-2 pretraining from scratch and continued poem-domain pretraining"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

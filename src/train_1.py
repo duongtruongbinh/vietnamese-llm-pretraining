@@ -2,6 +2,7 @@
 from loguru import logger
 import os
 from itertools import chain
+import pandas as pd
 
 import torch
 from datasets import load_dataset, concatenate_datasets
@@ -25,14 +26,9 @@ from src.config import (
     GRADIENT_CHECKPOINTING, DATALOADER_NUM_WORKERS,
     WANDB_RUN_NAME,
 )
-from src.utils import normalize_text
-
-def is_main_process():
-    return int(os.environ.get("LOCAL_RANK", 0)) == 0
+from src.utils import normalize_text, PerplexityCallback
 
 def load_and_prepare_dataset(tokenizer):
-    _main = is_main_process()
-
     all_datasets = []
     for src in DATASETS:
         ds = load_dataset("parquet", data_files=src["path"], split="train")
@@ -43,8 +39,7 @@ def load_and_prepare_dataset(tokenizer):
         if weight > 1:
             ds = concatenate_datasets([ds] * weight)
 
-        if _main:
-            logger.info("  {}: {} samples (weight={})", src["path"], f"{len(ds):,}", weight)
+        logger.info("  {}: {} samples (weight={})", src["path"], f"{len(ds):,}", weight)
         all_datasets.append(ds)
 
     dataset = concatenate_datasets(all_datasets).shuffle(seed=42)
@@ -86,44 +81,38 @@ def load_and_prepare_dataset(tokenizer):
 
     split = grouped.train_test_split(test_size=EVAL_SPLIT_RATIO, seed=42)
 
-    if _main:
-        total_tokens = len(grouped) * MAX_LENGTH
-        logger.info(
-            "Dataset: {} train / {} eval blocks ({:.2f}B tokens)",
-            f"{len(split['train']):,}",
-            f"{len(split['test']):,}",
-            total_tokens / 1e9,
-        )
+    total_tokens = len(grouped) * MAX_LENGTH
+    logger.info(
+        "Dataset: {} train / {} eval blocks ({:.2f}B tokens)",
+        f"{len(split['train']):,}",
+        f"{len(split['test']):,}",
+        total_tokens / 1e9,
+    )
 
     return split
 
 def main():
-    _main = is_main_process()
 
-    if _main:
-        if torch.cuda.is_available():
-            mem_gb = torch.cuda.get_device_properties(0).total_memory / 1e9
-            logger.info("GPU: {} ({:.1f} GB)", torch.cuda.get_device_name(0), mem_gb)
-        else:
-            logger.warning("No GPU detected. Training will be slow.")
+    if torch.cuda.is_available():
+        mem_gb = torch.cuda.get_device_properties(0).total_memory / 1e9
+        logger.info("GPU: {} ({:.1f} GB)", torch.cuda.get_device_name(0), mem_gb)
+    else:
+        logger.warning("No GPU detected. Training will be slow.")
 
     tokenizer = GPT2TokenizerFast.from_pretrained(TOKENIZER_DIR)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
-    if _main:
-        logger.info("Tokenizer: {} (vocab_size={})", TOKENIZER_DIR, f"{len(tokenizer):,}")
+    logger.info("Tokenizer: {} (vocab_size={})", TOKENIZER_DIR, f"{len(tokenizer):,}")
 
     config = GPT2Config.from_pretrained(BASE_MODEL)
     config.vocab_size = len(tokenizer)
+    config.use_cache = False
     config.attn_implementation = "flash_attention_2"
-    model = GPT2LMHeadModel(config).to(torch.bfloat16)
-    config.tie_word_embeddings = True
-    model.tie_weights()
-    if GRADIENT_CHECKPOINTING:
-        model.gradient_checkpointing_enable()
-    if _main:
-        n_params = sum(p.numel() for p in model.parameters())
-        logger.info("Model: random init, {:.1f}M params, flash_attention_2, bf16", n_params / 1e6)
+    # config.scale_attn_by_inverse_layer_idx = True
+    # config.reorder_and_upcast_attn = True
+    model = GPT2LMHeadModel(config)
+    n_params = sum(p.numel() for p in model.parameters())
+    logger.info("Model: random init, {:.1f}M params, flash_attention_2, bf16", n_params / 1e6)
 
     dataset = load_and_prepare_dataset(tokenizer)
 
@@ -136,6 +125,7 @@ def main():
     training_args = TrainingArguments(
         output_dir=CHECKPOINT_DIR,
         max_steps=max_steps,
+        gradient_checkpointing=GRADIENT_CHECKPOINTING,
         per_device_train_batch_size=PER_DEVICE_TRAIN_BATCH_SIZE,
         per_device_eval_batch_size=PER_DEVICE_EVAL_BATCH_SIZE,
         gradient_accumulation_steps=GRADIENT_ACCUMULATION_STEPS,
@@ -143,13 +133,10 @@ def main():
         weight_decay=WEIGHT_DECAY,
         warmup_ratio=WARMUP_RATIO,
         lr_scheduler_type="cosine",
-        fp16=False,
         bf16=BF16,
-        eval_strategy="steps",
-        eval_steps=500,
-        save_strategy="steps",
-        save_steps=500,
-        save_total_limit=3,
+        eval_strategy="steps", save_strategy="steps",
+        eval_steps=500, save_steps=500,
+        save_total_limit=3, 
         load_best_model_at_end=True,
         metric_for_best_model="eval_loss",
         greater_is_better=False,
@@ -157,21 +144,18 @@ def main():
         report_to=["wandb"],
         run_name=WANDB_RUN_NAME,
         dataloader_num_workers=DATALOADER_NUM_WORKERS,
-        dataloader_pin_memory=True,
-        seed=42,
-        data_seed=42,
+        seed=42, data_seed=42,
     )
 
     data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
-    if _main:
-        effective_batch = (
-            PER_DEVICE_TRAIN_BATCH_SIZE * GRADIENT_ACCUMULATION_STEPS * num_gpus
-        )
-        logger.info(
-            "Training: lr={}, batch={}, max_steps={} ({:.2f}B tokens)",
-            LEARNING_RATE, effective_batch, f"{max_steps:,}", TOKEN_BUDGET / 1e9,
-        )
+    effective_batch = (
+        PER_DEVICE_TRAIN_BATCH_SIZE * GRADIENT_ACCUMULATION_STEPS * num_gpus
+    )
+    logger.info(
+        "Training: lr={}, batch={}, max_steps={} ({:.2f}B tokens)",
+        LEARNING_RATE, effective_batch, f"{max_steps:,}", TOKEN_BUDGET / 1e9,
+    )
 
     trainer = Trainer(
         model=model,
@@ -180,14 +164,14 @@ def main():
         eval_dataset=dataset["test"],
         data_collator=data_collator,
         processing_class=tokenizer,
+        callbacks=[PerplexityCallback()],
     )
 
     resume_from = get_last_checkpoint(CHECKPOINT_DIR) if os.path.isdir(CHECKPOINT_DIR) else None
-    if _main:
-        if resume_from:
-            logger.info("Resuming from: {}", resume_from)
-        else:
-            logger.info("Starting fresh training...")
+    if resume_from:
+        logger.info("Resuming from: {}", resume_from)
+    else:
+        logger.info("Starting fresh training...")
 
     trainer.train(resume_from_checkpoint=resume_from)
 
@@ -197,11 +181,13 @@ def main():
         tokenizer.save_pretrained(final_dir)
 
     result = trainer.evaluate()
-    if _main:
-        loss = result["eval_loss"]
-        ppl = torch.exp(torch.tensor(loss)).item()
-        logger.info("Done. Eval loss={:.4f}, perplexity={:.2f}", loss, ppl)
-        logger.info("Model saved to: {}", final_dir)
+    loss = result["eval_loss"]
+    ppl = torch.exp(torch.tensor(loss)).item()
+    logger.info("Done. Eval loss={:.4f}, perplexity={:.2f}", loss, ppl)
+    logger.info("Model saved to: {}", final_dir)
+    
+    df = pd.DataFrame(trainer.state.log_history)
+    df.to_csv(os.path.join(CHECKPOINT_DIR, "log_history.csv"), index=False)
 
 if __name__ == "__main__":
     main()

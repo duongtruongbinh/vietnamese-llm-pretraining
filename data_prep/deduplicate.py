@@ -7,7 +7,7 @@ Strategy:
   3. Final exact document dedup after paragraph dedup
 
 Usage:
-    python data_prep/deduplicate.py [--skip-token-audit]
+    python data_prep/deduplicate.py
 """
 
 import argparse
@@ -73,7 +73,7 @@ def dedup_all():
     report = {"sources": {}}
     total_original = 0
     total_kept = 0
-
+    
     for path in cfg.RAW_DATASETS:
         if not os.path.exists(path):
             logger.warning("Skipping (not found): {}", path)
@@ -307,16 +307,10 @@ def print_summary(report):
 # ── Main ─────────────────────────────────────────────────────────────────────
 
 def main():
-    parser = argparse.ArgumentParser(description="Deduplicate pretraining corpus")
-    parser.add_argument("--skip-token-audit", action="store_true")
-    args = parser.parse_args()
-
     outputs, report = dedup_all()
-
-    if not args.skip_token_audit:
-        logger.info("Counting tokens...")
-        token_counts = count_tokens(outputs)
-        report["token_audit"] = build_token_audit(token_counts)
+    logger.info("Counting tokens...")
+    token_counts = count_tokens(outputs)
+    report["token_audit"] = build_token_audit(token_counts)
 
     report_path = DEDUP_DIR / "dedup_report.json"
     with report_path.open("w", encoding="utf-8") as f:

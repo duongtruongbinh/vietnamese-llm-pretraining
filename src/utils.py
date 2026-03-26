@@ -1,11 +1,28 @@
 #!/usr/bin/env python3
 """Shared utility functions."""
 
+import math
 import unicodedata
 from pathlib import Path
 
 import torch
-from transformers import GPT2LMHeadModel, GPT2TokenizerFast
+from transformers import GPT2LMHeadModel, GPT2TokenizerFast, TrainerCallback
+
+class PerplexityCallback(TrainerCallback):
+    """Callback to calculate and log perplexity mathematically from cross-entropy loss."""
+    def on_log(self, args, state, control, logs=None, **kwargs):
+        if logs is not None:
+            if "eval_loss" in logs: # Calculate eval perplexity
+                try:
+                    logs["eval_perplexity"] = math.exp(logs["eval_loss"])
+                except OverflowError:
+                    logs["eval_perplexity"] = float("inf")
+            
+            if "loss" in logs: # Calculate train perplexity
+                try:
+                    logs["train_perplexity"] = math.exp(logs["loss"])
+                except OverflowError: # Handle overflow
+                    logs["train_perplexity"] = float("inf")
 
 def normalize_text(text: str) -> str:
     """Apply Unicode NFC normalization, returning empty string for None."""
